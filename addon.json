@@ -1,5 +1,5 @@
 {
-  "title": "[TTT2] Voice Chat Toggle Key Binding",
+  "title": "[TTT2] Voice Chat Toggle Key",
   "type": "ServerContent",
   "tags": ["roleplay", "realism"],
   "ignore": [
@@ -9,6 +9,7 @@
     "readme.md",
     ".workshop.yaml",
     "LICENSE",
-    "addon.jpg"
+    "addon.jpg",
+    "addon.kra"
   ]
 }
