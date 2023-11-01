@@ -1,7 +1,7 @@
 AddCSLuaFile()
 
 local cv_auto_enable = CreateConVar("voice_toggle_auto_enable", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED },
-    "Automatically enable voice chat players when they join.")
+    "Automatically enable voice chat for players when they join.")
 local cv_hide_panels = CreateConVar("voice_toggle_hide_panels", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED },
     "Hide the voice panels in the top-left corner that show who else is talking.")
 

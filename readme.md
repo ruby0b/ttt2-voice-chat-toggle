@@ -6,9 +6,11 @@ Compatible with proximity voice chat addons.
 Players can change the keybinding in the TTT2 F1 settings menu (default binding is `H`).
 The console command to do the same is `voice_toggle`.
 
-## ConVars (server-wide)
+## Admin Settings
+
+Admins can open the TTT2 F1 menu > Server Addons > Voice Chat Toggle to change the following settings:
 
 | ConVar                   | Default | Description                                                                 |
 | ------------------------ | ------: | --------------------------------------------------------------------------- |
-| voice_toggle_auto_enable |       0 | Automatically enable voice chat players when they join.                     |
+| voice_toggle_auto_enable |       0 | Automatically enable voice chat for players when they join.                 |
 | voice_toggle_hide_panels |       0 | Hide the voice panels in the top-left corner that show who else is talking. |
