@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-local cv_enabled = CreateConVar("voice_toggle_auto_enable", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED },
+local cv_auto_enable = CreateConVar("voice_toggle_auto_enable", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED },
     "Automatically enable voice chat players when they join.")
 local cv_hide_panels = CreateConVar("voice_toggle_hide_panels", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED },
     "Hide the voice panels in the top-left corner that show who else is talking.")
@@ -29,7 +29,7 @@ if CLIENT then
     end
 
     hook.Add("InitPostEntity", "proximity_voice/AutoEnableVoiceChat",
-        function() if cv_enabled:GetBool() then voice_enable() end end)
+        function() if cv_auto_enable:GetBool() then voice_enable() end end)
 
     concommand.Add("voice_toggle", function(_ply, _cmd, _args, _argStr)
         voice_toggle()
