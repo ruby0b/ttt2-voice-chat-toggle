@@ -7,12 +7,16 @@ local cv_hide_panels = CreateConVar("voice_toggle_hide_panels", 0, { FCVAR_ARCHI
 
 if CLIENT then
     local function voice_enable()
-        if not VOICE.CanSpeak() then return false end
-        local client = LocalPlayer()
-        if hook.Run("TTT2CanUseVoiceChat", client, false) == false then
-            return false
+        if TTT2 then
+            if not VOICE.CanSpeak() then return false end
+            local client = LocalPlayer()
+            if hook.Run("TTT2CanUseVoiceChat", client, false) == false then
+                return false
+            end
+            VOICE.isTeam = false
+        else
+            if not GetGlobalBool("sv_voiceenable", true) then return false end
         end
-        VOICE.isTeam = false
         permissions.EnableVoiceChat(true)
         return true
     end
@@ -21,21 +25,21 @@ if CLIENT then
         return true
     end
     local function voice_toggle()
-        if not VOICE.IsSpeaking() then
+        if not LocalPlayer().speaking then
             return voice_enable()
         else
             return voice_disable()
         end
     end
 
-    hook.Add("InitPostEntity", "proximity_voice/AutoEnableVoiceChat",
+    hook.Add("InitPostEntity", "voice_toggle/AutoEnableVoiceChat",
         function() if cv_auto_enable:GetBool() then voice_enable() end end)
 
     concommand.Add("voice_toggle", function(_ply, _cmd, _args, _argStr)
         voice_toggle()
     end, nil, "Toggle Global Voice Chat")
 
-    hook.Add("TTT2Initialize", "proximity_voice/TTT2Initialize", function()
+    hook.Add("TTT2Initialize", "voice_toggle/TTT2Initialize", function()
         -- key binding for toggling voice chat
         bind.Register(
             "voice_toggle",
