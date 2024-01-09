@@ -9,26 +9,22 @@ if CLIENT then
     local sandbox_is_speaking
     local function voice_enable()
         if TTT2 then
-            if not VOICE.CanSpeak() then return false end
-            local client = LocalPlayer()
-            if hook.Run("TTT2CanUseVoiceChat", client, false) == false then
-                return false
-            end
+            if not VOICE.CanSpeak() or not VOICE.CanEnable() then return false end
             VOICE.isTeam = false
         else
             if not GetGlobalBool("sv_voiceenable", true) then return false end
+            sandbox_is_speaking = true
         end
         permissions.EnableVoiceChat(true)
-        sandbox_is_speaking = true
         return true
     end
     local function voice_disable()
+        if not TTT2 then sandbox_is_speaking = false end
         permissions.EnableVoiceChat(false)
-        sandbox_is_speaking = false
         return true
     end
     local function voice_toggle()
-        if (TTT2 and not VOICE.IsSpeaking()) or not sandbox_is_speaking then
+        if (TTT2 and not VOICE.IsSpeaking()) or (not TTT2 and not sandbox_is_speaking) then
             return voice_enable()
         else
             return voice_disable()
