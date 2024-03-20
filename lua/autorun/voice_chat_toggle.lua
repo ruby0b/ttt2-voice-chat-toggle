@@ -4,6 +4,8 @@ local cv_auto_enable = CreateConVar("voice_toggle_auto_enable", 0, { FCVAR_ARCHI
     "Automatically enable voice chat for players when they join.")
 local cv_hide_panels = CreateConVar("voice_toggle_hide_panels", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED },
     "Hide the voice panels in the top-left corner that show who else is talking.")
+local cv_show_dead = CreateConVar("voice_toggle_show_dead", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED },
+    "When spectating, show voice panels for fellow dead players.")
 
 if CLIENT then
     local sandbox_is_speaking
@@ -34,9 +36,7 @@ if CLIENT then
     hook.Add("InitPostEntity", "voice_toggle/AutoEnableVoiceChat",
         function() if cv_auto_enable:GetBool() then voice_enable() end end)
 
-    concommand.Add("voice_toggle", function(_ply, _cmd, _args, _argStr)
-        voice_toggle()
-    end, nil, "Toggle Global Voice Chat")
+    concommand.Add("voice_toggle", voice_toggle, nil, "Toggle Global Voice Chat")
 
     hook.Add("TTT2Initialize", "voice_toggle/TTT2Initialize", function()
         -- key binding for toggling voice chat
@@ -59,7 +59,10 @@ if CLIENT then
             local client = LocalPlayer()
             if not IsValid(g_VoicePanelList) or not IsValid(ply) or not IsValid(client) then return end
 
-            -- get the newly created voice panel
+            -- show dead players' voice panels when spectating
+            if cv_show_dead:GetBool() and not client:Alive() and not ply:Alive() then return end
+
+            -- get the newly created voice panel to hide it
             local new_panel_index = g_VoicePanelList:ChildCount() - 1
             local pnl = g_VoicePanelList:GetChild(new_panel_index)
             if pnl.ply ~= client then
