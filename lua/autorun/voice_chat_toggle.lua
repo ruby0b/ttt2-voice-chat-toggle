@@ -3,9 +3,9 @@ AddCSLuaFile()
 local cv_auto_enable = CreateConVar("voice_toggle_auto_enable", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED },
     "Automatically enable voice chat for players when they join.")
 local cv_hide_panels = CreateConVar("voice_toggle_hide_panels", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED },
-    "Hide the voice panels in the top-left corner that show who else is talking.")
-local cv_show_dead = CreateConVar("voice_toggle_show_dead", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED },
-    "When spectating, show voice panels for fellow dead players.")
+    "Hide the voice panels that show who else is talking.")
+local cv_show_panels_spec = CreateConVar("voice_toggle_show_panels_spectator", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED },
+    "Show voice panels for fellow dead players while spectating.")
 
 if CLIENT then
     local sandbox_is_speaking
@@ -59,8 +59,8 @@ if CLIENT then
             local client = LocalPlayer()
             if not IsValid(g_VoicePanelList) or not IsValid(ply) or not IsValid(client) then return end
 
-            -- show dead players' voice panels when spectating
-            if cv_show_dead:GetBool() and not client:Alive() and not ply:Alive() then return end
+            -- show voice panels for spectators (if enabled)
+            if cv_show_panels_spec:GetBool() and client:IsSpec() and ply:IsSpec() then return end
 
             -- get the newly created voice panel to hide it
             local new_panel_index = g_VoicePanelList:ChildCount() - 1

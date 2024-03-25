@@ -17,8 +17,8 @@ function CLGAMEMODESUBMENU:Populate(parent)
     })
 
     form:MakeCheckBox({
-        serverConvar = "voice_toggle_show_dead",
-        label = "When spectating, show voice panels for fellow dead players.",
+        serverConvar = "voice_toggle_show_panels_spectator",
+        label = "Show voice panels for fellow dead players while spectating.",
         master = hide_panels
     })
 end
