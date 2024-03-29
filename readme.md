@@ -13,7 +13,9 @@ Admins can open the TTT2 F1 menu > Server Addons > Voice Chat Toggle to change t
 | ConVar                   | Default | Description                                                                 |
 | ------------------------ | ------: | --------------------------------------------------------------------------- |
 | voice_toggle_auto_enable |       0 | Automatically enable voice chat for players when they join.                 |
+| voice_toggle_hide_panels |       0 | Hide the voice panels in the top-left corner that show who else is talking. |
 
 ## Sandbox
 
 If you're using this in sandbox you'll have too manually bind a key to the `voice_toggle` console command.
+The `voice_toggle_hide_panels` setting is also ignored in sandbox.

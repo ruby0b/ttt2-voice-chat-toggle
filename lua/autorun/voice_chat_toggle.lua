@@ -2,6 +2,10 @@ AddCSLuaFile()
 
 local cv_auto_enable = CreateConVar("voice_toggle_auto_enable", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED },
     "Automatically enable voice chat for players when they join.")
+local cv_hide_panels = CreateConVar("voice_toggle_hide_panels", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED },
+    "Hide the voice panels that show who else is talking.")
+local cv_show_panels_spec = CreateConVar("voice_toggle_show_panels_spectator", 0, { FCVAR_ARCHIVE, FCVAR_REPLICATED },
+    "Show voice panels for fellow dead players while spectating.")
 
 if CLIENT then
     local sandbox_is_speaking
@@ -35,6 +39,7 @@ if CLIENT then
     concommand.Add("voice_toggle", voice_toggle, nil, "Toggle Global Voice Chat")
 
     hook.Add("TTT2Initialize", "voice_toggle/TTT2Initialize", function()
+        -- key binding for toggling voice chat
         bind.Register(
             "voice_toggle",
             voice_toggle,
@@ -43,5 +48,28 @@ if CLIENT then
             "Toggle Global Voice Chat",
             KEY_H
         )
+
+        -- disable top-left voice panels that show who else is talking
+        local old_PlayerStartVoice = GAMEMODE.PlayerStartVoice
+        function GAMEMODE:PlayerStartVoice(ply)
+            old_PlayerStartVoice(self, ply)
+
+            if not cv_hide_panels:GetBool() then return end
+
+            local client = LocalPlayer()
+            if not IsValid(g_VoicePanelList) or not IsValid(ply) or not IsValid(client) then return end
+
+            -- show voice panels for spectators (if enabled)
+            if cv_show_panels_spec:GetBool() and client:IsSpec() and ply:IsSpec() then return end
+
+            -- get the newly created voice panel to hide it
+            local new_panel_index = g_VoicePanelList:ChildCount() - 1
+            local pnl = g_VoicePanelList:GetChild(new_panel_index)
+            if pnl.ply ~= client then
+                -- immediately hide and delete all other players' panels
+                pnl:SetAlpha(0)
+                pnl:Remove()
+            end
+        end
     end)
 end
